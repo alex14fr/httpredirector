@@ -14,7 +14,6 @@
 #define REDIRECT_TO "https://uq.math.cnrs.fr"
 #define MAXLEN 1024
 
-void myperr(char *s) { write(STDERR_FILENO, s, strlen(s)); }
 
 struct myrbuf {
 	char b[MAXLEN];
@@ -23,19 +22,15 @@ struct myrbuf {
 	int fd;
 };
 
-inline void mywrstr(struct myrbuf *rb, char *str) {
-	write(rb->fd, str, strlen(str));
-}
+#define myperr(s) { write(STDERR_FILENO, (s), strlen(s)); }
+#define mywrstr(x, str) write((x)->fd, (str), strlen(str));
 
 int mygetc(struct myrbuf *rb) {
 	if(rb->i >= rb->l) {
 		int nr;
 		nr=read(rb->fd, rb->b, MAXLEN);
-		if(nr <= 0) {
-			if(nr<0)
-				myperr("read");
+		if(nr <= 0) 
 			return(-1);
-		}
 		rb->i=0;
 		rb->l=nr;
 	}
@@ -74,7 +69,7 @@ void handle_conn(int sock, struct sockaddr_in6 *saddr) {
 	signal(SIGALRM, alarmhdl);
 	while(1) {
 		int n, i=0;
-		if((n=myreadline(&rb, line)) < 0) { exit(0); }
+		n=myreadline(&rb, line);
 		while(i<n && line[i]!=' ') i++;
 		if(i==n) badreq(&rb);
 		i++;
@@ -85,13 +80,12 @@ void handle_conn(int sock, struct sockaddr_in6 *saddr) {
 		urllen=i-(url-line);
 		mywrstr(&rb, "HTTP/1.1 301 Moved permanently\r\nLocation: " REDIRECT_TO);
 		write(rb.fd, url, urllen);
-		mywrstr(&rb, "\r\n\r\n");
-//		mywrstr(&rb, "\r\nConnection: close\r\nContent-length: 0\r\n\r\n");
+		mywrstr(&rb, "\r\nConnection: close\r\n\r\n");
 		exit(0);
 	}
 }
 
-void server(int argc, char **argv) {
+inline void server(int argc, char **argv) {
 	int ssock=socket(AF_INET6, SOCK_STREAM, 0);
 	struct sockaddr_in6 addr, addr_c;
 	memset(&addr, 0, sizeof(struct sockaddr_in6));

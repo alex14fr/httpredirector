@@ -1,6 +1,4 @@
 {
-  "created": "2024-02-22T00:00:00+02:00",
-  "author": "Alexandre Janon <alexandre.janon@universite-paris-saclay.fr>",
   "architecture": "amd64",
   "os": "linux",
   "rootfs": {
@@ -10,9 +8,6 @@
     ]
   },
   "config": {
-	  "Env": [],
-	  "WorkingDir": "/",
-	  "Entrypoint": ["/httpredir"],
-	  "Cmd": []
+	  "Entrypoint": ["/e"]
 	}
 }
