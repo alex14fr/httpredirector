@@ -1,0 +1,5 @@
+sh mkrootfs
+sh put_blob rootfs.tar.gz
+sh put_blob config.json
+sh put_manifest manifest.json
+
