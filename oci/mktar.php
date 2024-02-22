@@ -42,5 +42,5 @@ function patchtar($s) {
 $n=filesize("httpredir");
 print tarhdr("e", $n, 0);
 print patchtar(file_get_contents("httpredir"));
-print tarpad(filesize("httpredir"));
+print tarpad($n);
 

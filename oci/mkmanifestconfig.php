@@ -26,7 +26,7 @@ $search=array("_ROOTFS_MIME",
 $replce=array(trim(file_get_contents("config/mime_rootfs")),
 				  trim(file_get_contents("config/mime_manifest")),
 				  trim(file_get_contents("config/mime_config")),
-						  hashF("compress.zlib://rootfs.tar.gz"),
+				  	hashF("compress.zlib://rootfs.tar.gz"),
 						  filesize("rootfs.tar.gz"),
 						  hashF("rootfs.tar.gz"));
 file_put_contents("config.json", str_replace($search, $replce, compactJSON(file_get_contents("config.json.in"))));

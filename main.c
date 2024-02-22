@@ -78,7 +78,7 @@ void handle_conn(int sock, struct sockaddr_in6 *saddr) {
 		url=line+i;
 		while(i<n && line[i]!='\r' && line[i]!=' ') i++;
 		urllen=i-(url-line);
-		mywrstr(&rb, "HTTP/1.1 301 Moved permanently\r\nLocation: " REDIRECT_TO);
+		mywrstr(&rb, "HTTP/1.1 301\r\nLocation: " REDIRECT_TO);
 		write(rb.fd, url, urllen);
 		mywrstr(&rb, "\r\nConnection: close\r\n\r\n");
 		exit(0);
