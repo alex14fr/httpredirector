@@ -1,0 +1,4 @@
+#!/bin/sh
+cc -o httpredir -Wall -std=c99 -Os -static -s ../main.c
+tar cv --numeric-owner --format=ustar --owner=0 --group=0  httpredir |gzip -9c > rootfs.tar.gz
+
