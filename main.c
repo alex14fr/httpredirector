@@ -63,7 +63,6 @@ int myreadline(struct myrbuf *rb, char *line) {
 }
 
 void alarmhdl(int s) {
-	printf("timeout\n");
 	exit(0);
 }
 
@@ -98,8 +97,8 @@ void server(int argc, char **argv) {
 	memset(&addr, 0, sizeof(struct sockaddr_in6));
 	addr.sin6_family=AF_INET6;
 	addr.sin6_port=htons(PORT);
-	int z=1;
-	setsockopt(ssock, SOL_SOCKET, SO_REUSEADDR, &z, sizeof(int));
+/*	int z=1;
+	setsockopt(ssock, SOL_SOCKET, SO_REUSEADDR, &z, sizeof(int)); */
 	if(bind(ssock, (struct sockaddr*)(&addr), sizeof(struct sockaddr_in6))<0) { myperr("bind"); return; }
 	if(listen(ssock, 1)<0) { myperr("listen"); return; }
 	int csock;
