@@ -15,7 +15,7 @@
 #define PORT 8080
 #define MAXLEN 1024
 
-#define myperr perror
+void myperr(char *s) { write(STDERR_FILENO, s, strlen(s)); }
 
 struct myrbuf {
 	char b[MAXLEN];
