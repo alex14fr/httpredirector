@@ -1,5 +1,6 @@
 #!/bin/sh
-cc -o httpredir -Wall -std=c99 -Os -static -s ../main.c
+#cc -o httpredir -Wall -std=c99 -Os -static -s ../main.c
+~/dietlibc-0.34/bin-x86_64/diet -v gcc -o httpredir -Wall -std=c99 -Os -static -s ../main.c
 tar cv --numeric-owner --format=ustar --owner=0 --group=0  httpredir |gzip -9c > rootfs.tar.gz
 php mkmanifestconfig.php
 

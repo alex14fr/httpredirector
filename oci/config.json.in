@@ -10,7 +10,7 @@
     ]
   },
   "config": {
-	  "Env": ["HOME=/"],
+	  "Env": [],
 	  "WorkingDir": "/",
 	  "Entrypoint": ["/httpredir"],
 	  "Cmd": []

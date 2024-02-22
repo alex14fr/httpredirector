@@ -12,7 +12,6 @@
 #include <errno.h>
 
 #define REDIRECT_TO "https://uq.math.cnrs.fr"
-#define PORT 8080
 #define MAXLEN 1024
 
 void myperr(char *s) { write(STDERR_FILENO, s, strlen(s)); }
@@ -24,7 +23,7 @@ struct myrbuf {
 	int fd;
 };
 
-void mywrstr(struct myrbuf *rb, char *str) {
+inline void mywrstr(struct myrbuf *rb, char *str) {
 	write(rb->fd, str, strlen(str));
 }
 
@@ -86,7 +85,8 @@ void handle_conn(int sock, struct sockaddr_in6 *saddr) {
 		urllen=i-(url-line);
 		mywrstr(&rb, "HTTP/1.1 301 Moved permanently\r\nLocation: " REDIRECT_TO);
 		write(rb.fd, url, urllen);
-		mywrstr(&rb, "\r\nConnection: close\r\n\r\n");
+		mywrstr(&rb, "\r\n\r\n");
+//		mywrstr(&rb, "\r\nConnection: close\r\nContent-length: 0\r\n\r\n");
 		exit(0);
 	}
 }
@@ -96,7 +96,8 @@ void server(int argc, char **argv) {
 	struct sockaddr_in6 addr, addr_c;
 	memset(&addr, 0, sizeof(struct sockaddr_in6));
 	addr.sin6_family=AF_INET6;
-	addr.sin6_port=htons(PORT);
+	*((char*)&addr.sin6_port)=0x1f; 
+	*(1+(char*)&addr.sin6_port)=0x90;
 /*	int z=1;
 	setsockopt(ssock, SOL_SOCKET, SO_REUSEADDR, &z, sizeof(int)); */
 	if(bind(ssock, (struct sockaddr*)(&addr), sizeof(struct sockaddr_in6))<0) { myperr("bind"); return; }
