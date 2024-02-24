@@ -29,18 +29,18 @@ function tarpad($nwritten) {
 		$pad.="\0";
 	return($pad);
 }
-function patchtar($s) {
+function patchelf($s) {
 	$s[0x38]=chr(3); // e_phnum
-	$ph1=substr($s, 0x40+0x38*1, 0x38); // .text
-	$ph2=substr($s, 0x40+0x38*2, 0x38); // .rodata
-	$ph3=substr($s, 0x40+0x38*3, 0x38); // .bss
+	$ph1=substr($s, 0x40, 0x38); // .text
+	//$ph2=substr($s, 0x40+0x38*2, 0x38); // .rodata
+	$ph3=substr($s, 0x40+0x38*1, 0x38); // .bss
 	$null=str_repeat(chr(0), 0x38);
-	$ph=$ph1.$ph2.$ph3.$null.$null.$null.$null.$null;
+	$ph=$ph1.$ph3.$null.$null.$null.$null;
 	for($i=0; $i<strlen($ph); $i++) $s[0x40+$i]=$ph[$i];
 	return($s);
 }
 $n=filesize("httpredir");
 print tarhdr("e", $n, 0);
-print patchtar(file_get_contents("httpredir"));
+print patchelf(file_get_contents("httpredir"));
 print tarpad($n);
 
