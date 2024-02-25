@@ -30,13 +30,16 @@ function tarpad($nwritten) {
 	return($pad);
 }
 function patchelf($s) {
-	$s[0x38]=chr(3); // e_phnum
-	$ph1=substr($s, 0x40, 0x38); // .text
-	//$ph2=substr($s, 0x40+0x38*2, 0x38); // .rodata
-	$ph3=substr($s, 0x40+0x38*1, 0x38); // .bss
+	$norig=ord($s[0x38]);
+	$s[0x38]=chr(2); // e_phnum
+	$norig-=ord($s[0x38]);
+	$ph1=substr($s, 0x40, 0x38); 
+	$ph3=substr($s, 0x40+0x38*1, 0x38); 
 	$null=str_repeat(chr(0), 0x38);
-	$ph=$ph1.$ph3.$null.$null.$null.$null;
-	for($i=0; $i<strlen($ph); $i++) $s[0x40+$i]=$ph[$i];
+	$ph=$ph1.$ph3;
+	for($i=0; $i<$norig; $i++) $ph.=$null;
+	$n=strlen($ph);
+	for($i=0; $i<$n; ++$i) $s[0x40+$i]=$ph[$i];
 	return($s);
 }
 $n=filesize("httpredir");
