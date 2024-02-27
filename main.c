@@ -69,8 +69,8 @@ void server(int argc, char **argv) {
 	struct sockaddr_in6 addr, addr_c;
 	memset(&addr, 0, sizeof(struct sockaddr_in6));
 	addr.sin6_family=AF_INET6;
-	*((char*)&addr.sin6_port)=0x1f; 
-	*(1+(char*)&addr.sin6_port)=0x90;
+	*((unsigned char*)&addr.sin6_port)=0x1f; 
+	*(1+(unsigned char*)&addr.sin6_port)=0x90;
 /*	int z=1;
 	setsockopt(ssock, SOL_SOCKET, SO_REUSEADDR, &z, sizeof(int)); */
 	if(ssock < 0 ||
