@@ -1,5 +1,5 @@
 #!/bin/sh
 ~/dietlibc/bin-x86_64/diet -v gcc -Wl,-z,noseparate-code -o httpredir -Wall -std=c99 -Os -static-pie -s ../main.c
 objcopy -j .text -j .rodata -j .bss --strip-section-headers httpredir
-php mktar.php | gzip -9 > rootfs.tar.gz
+php mktar.php | gzip -9c > rootfs.tar.gz
 php mkmanifestconfig.php
